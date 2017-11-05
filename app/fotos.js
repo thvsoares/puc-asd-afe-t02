@@ -218,6 +218,48 @@ function Model() {
                 alert('Failed to retrieve search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
             });
     }
+
+    self.getAlbumImages = function (album) {
+        self.searchResult.removeAll();
+        self.currentResult(0);
+        $.ajax({
+            url: API_URL + '/images/collections/' + album.id + '/items',
+            headers: {
+                Authorization: self.authorization()
+            }
+        })
+            .done(function (data) {
+                if (data.data.lenght == 0) {
+                    return;
+                }
+                $.each(data.data, function (i, item) {
+                    self.getImage(item.id);
+                });
+                self.showThumbs();
+            })
+            .fail(function (xhr, status, err) {
+                alert('Failed to retrieve search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
+            });
+    }
+
+    self.getImage = function (id) {
+        $.ajax({
+            url: API_URL + '/images/' + id + '?view=minimal',
+            headers: {
+                Authorization: self.authorization()
+            }
+        })
+            .done(function (data) {
+                if (data && data.media_type == 'image') {
+                    self.searchResult.push({
+                        id: data.id,
+                        imageSource: data.assets.preview.url,
+                        imageThumb: data.assets.large_thumb.url,
+                        description: data.description
+                    });
+                }
+            });
+    }
 }
 
 ko.applyBindings(new Model());

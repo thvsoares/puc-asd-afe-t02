@@ -87,7 +87,7 @@
 			<!-- albuns -->
 			<div id="albuns" class="row col-xm-12" data-bind="visible: albunsIsVisible">
 				<div class="col-xm-12 col-md-8" data-bind="foreach: albuns">
-					<a href="#" class="album-item col-xm-6 col-md-4">
+					<a href="#" class="album-item col-xm-6 col-md-4" data-bind="click: $parent.getAlbumImages">
 						<span class="glyphicon glyphicon-folder-open"></span>
 						<span data-bind="text: $data.name"></span>
 					</a>
