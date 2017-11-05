@@ -5,7 +5,11 @@ function Model() {
 
     self.query = ko.observable();
 
+    self.newAlbumName = ko.observable();
+
     self.searchResult = ko.observableArray();
+
+    self.albuns = ko.observableArray();
 
     self.currentResult = ko.observable(0);
 
@@ -13,9 +17,12 @@ function Model() {
 
     self.thumbsIsVisible = ko.observable(false);
 
+    self.albunsIsVisible = ko.observable(false);
+
     self.hideControls = function () {
         self.slideShowIsVisible(false);
         self.thumbsIsVisible(false);
+        self.albunsIsVisible(false);
     }
 
     self.showSlidShow = function () {
@@ -26,6 +33,12 @@ function Model() {
     self.showThumbs = function () {
         self.hideControls();
         self.thumbsIsVisible(true);
+    }
+
+    self.showAlbuns = function () {
+        self.hideControls();
+        self.getAlbuns();
+        self.albunsIsVisible(true);
     }
 
     self.hasResults = ko.computed(function () {
@@ -86,7 +99,7 @@ function Model() {
 
     self.soauth = new ShutterstockOAuth({
         client_id: "018cd-f1f3c-694b4-5785a-763bb-a0dd8",
-        scope: "user.email user.address",
+        scope: "collections.view collections.edit",
         redirect_endpoint: "/completed.html",
         success: function (data) { self.callbackOauth("success", data); },
         failure: function (data) { self.callbackOauth("failure", data); },
@@ -159,6 +172,51 @@ function Model() {
         }
 
         self.showSlidShow();
+    }
+
+    self.getAlbuns = function () {
+        self.albuns.removeAll();
+        $.ajax({
+            url: API_URL + '/images/collections',
+            data: { query: self.query() },
+            headers: {
+                Authorization: self.authorization()
+            }
+        })
+            .done(function (data) {
+                if (data.total_count === 0) {
+                    return;
+                }
+                $.each(data.data, function (i, item) {
+                    self.albuns.push({
+                        id: item.id,
+                        name: item.name,
+                        count: item.total_item_count
+                    });
+                });
+            })
+            .fail(function (xhr, status, err) {
+                alert('Failed to retrieve search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
+            });
+    }
+
+    self.createAlbun = function () {
+        var data = ko.toJSON({ name: self.newAlbumName() });
+        $.post({
+            url: API_URL + '/images/collections',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            headers: {
+                Authorization: self.authorization()
+            }
+        })
+            .done(function (data) {
+                self.getAlbuns();
+            })
+            .fail(function (xhr, status, err) {
+                alert('Failed to retrieve search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
+            });
     }
 }
 

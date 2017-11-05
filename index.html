@@ -28,7 +28,7 @@
 						<a href="#" data-bind="click: showThumbs">Painel de fotos</a>
 					</li>
 					<li>
-						<a href="#">Lista de álbuns</a>
+						<a href="#" data-bind="click: showAlbuns">Lista de álbuns</a>
 					</li>
 				</ul>
 				<div class="navbar-form navbar-left" role="search">
@@ -83,6 +83,22 @@
 				</nav>
 			</div>
 			<!-- /slideshow -->
+
+			<!-- albuns -->
+			<div id="albuns" class="row col-xm-12" data-bind="visible: albunsIsVisible">
+				<div class="col-xm-12 col-md-8" data-bind="foreach: albuns">
+					<a href="#" class="album-item col-xm-6 col-md-4">
+						<span class="glyphicon glyphicon-folder-open"></span>
+						<span data-bind="text: $data.name"></span>
+					</a>
+				</div>
+				<div class="col-xm-12 col-md-4">
+					<label>Nome do novo álbum: </label>
+					<input type="text" data-bind="textInput: newAlbumName" />
+					<button data-bind="click: createAlbun">Criar novo álbum</button>
+				</div>
+			</div>
+			<!-- /albuns -->
 		</article>
 	</section>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
