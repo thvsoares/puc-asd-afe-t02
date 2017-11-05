@@ -11,6 +11,8 @@ function Model() {
 
     self.albuns = ko.observableArray();
 
+    self.selectedAlbum = ko.observable();
+
     self.currentResult = ko.observable(0);
 
     self.slideShowIsVisible = ko.observable(false);
@@ -32,6 +34,7 @@ function Model() {
 
     self.showThumbs = function () {
         self.hideControls();
+        self.getAlbuns();
         self.thumbsIsVisible(true);
     }
 
@@ -153,7 +156,8 @@ function Model() {
                             id: item.id,
                             imageSource: item.assets.preview.url,
                             imageThumb: item.assets.large_thumb.url,
-                            description: item.description
+                            description: item.description,
+                            selected: false
                         });
                     }
                 });
@@ -176,6 +180,7 @@ function Model() {
 
     self.getAlbuns = function () {
         self.albuns.removeAll();
+        self.selectedAlbum(null);
         $.ajax({
             url: API_URL + '/images/collections',
             data: { query: self.query() },
@@ -255,9 +260,43 @@ function Model() {
                         id: data.id,
                         imageSource: data.assets.preview.url,
                         imageThumb: data.assets.large_thumb.url,
-                        description: data.description
+                        description: data.description,
+                        selected: false
                     });
                 }
+            });
+    }
+
+    self.addImages = function () {
+        if (!self.selectedAlbum())
+            return;
+        var selectedItems = [];
+        for (var i = 0; i < self.searchResult().length; i++) {
+            if (self.searchResult()[i].selected) {
+                selectedItems.push({
+                    id: self.searchResult()[i].id,
+                    media_type: 'image',
+                    added_time: (new Date()).toJSON()
+                });
+            }
+        }
+        if (!selectedItems.length)
+            return;
+        var data = ko.toJSON({ items: selectedItems });
+        $.post({
+            url: API_URL + '/images/collections/' + self.selectedAlbum() + '/items',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            headers: {
+                Authorization: self.authorization()
+            }
+        })
+            .done(function (data) {
+                self.getAlbumImages({ id: self.selectedAlbum() });
+            })
+            .fail(function (xhr, status, err) {
+                alert('Failed to retrieve search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
             });
     }
 }
