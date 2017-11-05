@@ -25,7 +25,7 @@
 			<div class="collapse navbar-collapse" id="menu">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="#">Painel de fotos</a>
+						<a href="#" data-bind="click: showThumbs">Painel de fotos</a>
 					</li>
 					<li>
 						<a href="#">Lista de álbuns</a>
@@ -52,7 +52,17 @@
 
 	<section class="container-fluid">
 		<article class="col-xm-12">
-		<!-- slideshow -->
+			<!-- thumbs -->
+			<div id="thumbs" class="thumbs row col-xm-12" data-bind="foreach: searchResult, visible: thumbsIsVisible">
+				<div class="col-xm-6 col-md-3">
+					<a href="#" class="thumbnail" data-bind="click: $parent.setCurrentImage">
+						<img data-bind="attr: { src: $data.imageThumb, alt: $data.description }">
+					</a>
+				</div>
+			</div>
+			<!-- /thumbs -->
+
+			<!-- slideshow -->
 			<div id="slideshow" class="slideshow col-xm-12" data-bind="visible: slideShowIsVisible">
 				<div class="slideshow-image col-xm-12 col-lg-10">
 					<img data-bind="attr: { src: currentImageSource, alt: currentImageDescription }">
@@ -72,7 +82,7 @@
 					</ul>
 				</nav>
 			</div>
-		<!-- /slideshow -->			
+			<!-- /slideshow -->
 		</article>
 	</section>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>

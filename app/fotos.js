@@ -11,6 +11,23 @@ function Model() {
 
     self.slideShowIsVisible = ko.observable(false);
 
+    self.thumbsIsVisible = ko.observable(false);
+
+    self.hideControls = function () {
+        self.slideShowIsVisible(false);
+        self.thumbsIsVisible(false);
+    }
+
+    self.showSlidShow = function () {
+        self.hideControls();
+        self.slideShowIsVisible(true);
+    }
+
+    self.showThumbs = function () {
+        self.hideControls();
+        self.thumbsIsVisible(true);
+    }
+
     self.hasResults = ko.computed(function () {
         return self.searchResult().length;
     }, this);
@@ -58,7 +75,7 @@ function Model() {
     }
 
     // Indicate that the authorization processes was executed
-    self.authorized = ko.pureComputed(function(){
+    self.authorized = ko.pureComputed(function () {
         return self.token() != null;
     }, this)
 
@@ -104,7 +121,7 @@ function Model() {
     self.search = function () {
         self.currentResult(0);
         self.searchResult.removeAll();
-        self.slideShowIsVisible(true);
+        self.showThumbs();
 
         $.ajax({
             url: API_URL + '/images/search',
@@ -122,6 +139,7 @@ function Model() {
                         self.searchResult.push({
                             id: item.id,
                             imageSource: item.assets.preview.url,
+                            imageThumb: item.assets.large_thumb.url,
                             description: item.description
                         });
                     }
@@ -130,6 +148,17 @@ function Model() {
             .fail(function (xhr, status, err) {
                 alert('Failed to retrieve ' + mediaType + ' search results:\n' + JSON.stringify(xhr.responseJSON, null, 2));
             });
+    }
+
+    self.setCurrentImage = function (image) {
+        for (var index = 0; index < self.searchResult().length; index++) {
+            if (self.searchResult()[index].id == image.id) {
+                self.currentResult(index);
+                break;
+            }
+        }
+
+        self.showSlidShow();
     }
 }
 
