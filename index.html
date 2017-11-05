@@ -23,12 +23,27 @@
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="menu">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="index.html#/Painel">Painel de fotos</a>
+					</li>
+					<li>
+						<a href="index.html#/Albuns">Lista de álbuns</a>
+					</li>
+				</ul>
 				<div class="navbar-form navbar-left" role="search">
 					<div class="form-group input-group">
 						<input type="text" class="form-control" placeholder="Buscar..." data-bind="textInput: query">
-						<span class="input-group-btn"><button class="btn btn-default" data-bind="click: search">Buscar!</button></span>
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-bind="click: search">Buscar!</button>
+						</span>
 					</div>
 				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active">
+						<a href="#" data-bind="click: auth">Autorizar</a>
+					</li>
+				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
 		</div>
@@ -44,8 +59,15 @@
 				</div>
 				<nav aria-label="...">
 					<ul class="pager">
-						<li class="previous" data-bind="click: previous, enable: hasResults"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
-						<li class="next" data-bind="click: next, enable: hasResults"><a href="#">Próxima <span aria-hidden="true">&rarr;</span></a></li>
+						<li class="previous" data-bind="click: previous, enable: hasResults">
+							<a href="#">
+								<span aria-hidden="true">&larr;</span> Anterior</a>
+						</li>
+						<li class="next" data-bind="click: next, enable: hasResults">
+							<a href="#">Próxima
+								<span aria-hidden="true">&rarr;</span>
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -54,6 +76,7 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="node_modules/knockout/build/output/knockout-latest.js"></script>
+	<script src="app/shutterstock-oauth.js"></script>
 	<script src="app/fotos.js"></script>
 </body>
 
