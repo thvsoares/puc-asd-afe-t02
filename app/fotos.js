@@ -9,6 +9,8 @@ function Model() {
 
     self.currentResult = ko.observable(0);
 
+    self.slideShowIsVisible = ko.observable(false);
+
     self.hasResults = ko.computed(function () {
         return self.searchResult().length;
     }, this);
@@ -102,6 +104,7 @@ function Model() {
     self.search = function () {
         self.currentResult(0);
         self.searchResult.removeAll();
+        self.slideShowIsVisible(true);
 
         $.ajax({
             url: API_URL + '/images/search',
@@ -118,7 +121,7 @@ function Model() {
                     if (item.media_type == 'image') {
                         self.searchResult.push({
                             id: item.id,
-                            imageSource: item.assets.large_thumb.url,
+                            imageSource: item.assets.preview.url,
                             description: item.description
                         });
                     }

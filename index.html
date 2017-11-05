@@ -25,10 +25,10 @@
 			<div class="collapse navbar-collapse" id="menu">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="index.html#/Painel">Painel de fotos</a>
+						<a href="#">Painel de fotos</a>
 					</li>
 					<li>
-						<a href="index.html#/Albuns">Lista de álbuns</a>
+						<a href="#">Lista de álbuns</a>
 					</li>
 				</ul>
 				<div class="navbar-form navbar-left" role="search">
@@ -52,13 +52,14 @@
 
 	<section class="container-fluid">
 		<article class="col-xm-12">
-			<div class="col-xm-12">
-				<div class="thumbnail">
+		<!-- slideshow -->
+			<div id="slideshow" class="slideshow col-xm-12" data-bind="visible: slideShowIsVisible">
+				<div class="slideshow-image col-xm-12 col-lg-10">
 					<img data-bind="attr: { src: currentImageSource, alt: currentImageDescription }">
 					<p data-bind="text: currentImageDescription"></p>
 				</div>
 				<nav aria-label="...">
-					<ul class="pager">
+					<ul class="pager col-xm-12 col-lg-2">
 						<li class="previous" data-bind="click: previous, enable: hasResults">
 							<a href="#">
 								<span aria-hidden="true">&larr;</span> Anterior</a>
@@ -71,6 +72,7 @@
 					</ul>
 				</nav>
 			</div>
+		<!-- /slideshow -->			
 		</article>
 	</section>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
