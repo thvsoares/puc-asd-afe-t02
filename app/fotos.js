@@ -34,12 +34,20 @@ function Model() {
 
     self.showThumbs = function () {
         self.hideControls();
+        if(!self.authorized()){
+            self.auth();
+            return;
+        }
         self.getAlbuns();
         self.thumbsIsVisible(true);
     }
 
     self.showAlbuns = function () {
         self.hideControls();
+        if(!self.authorized()){
+            self.auth();
+            return;
+        }
         self.getAlbuns();
         self.albunsIsVisible(true);
     }

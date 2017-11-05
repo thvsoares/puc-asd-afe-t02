@@ -35,7 +35,7 @@
 					<div class="form-group input-group">
 						<input type="text" class="form-control" placeholder="Buscar..." data-bind="textInput: query">
 						<span class="input-group-btn">
-							<button class="btn btn-default" data-bind="click: search">Buscar!</button>
+							<button class="btn btn-default" data-bind="click: search, enable: authorized">Buscar!</button>
 						</span>
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 				<div class="col-xm-12 col-md-4">
 					<span>Adicionar itens selecionados ao álbum:</span>
 					<select data-bind="options: albuns, optionsText: 'name', optionsValue: 'id', selectedOptions: selectedAlbum"></select>
-					<button data-bind="click: addImages">Adicionar</button>
+					<button data-bind="click: addImages, enable: authorized">Adicionar</button>
 				</div>
 			</div>
 			<!-- /thumbs -->
